@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BotScope: Bot Performance Monitoring</title>
+  <style>
+    /* Global Styles */
+    body {
+    }
+
+    /* Particle.js Styles */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1; 
+      width: 100%;
+      height: 100%;
+      background-color: #F5F5F5;
+    }
+
+    /* Container Styles */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    @media (max-width: 767px) {
+      /* Adjust for small screens */
+      .container {
+        padding: 10px;
+        border-radius: 0px;
+      }
+    }
+    
+    /* Heading Styles */
+.glass-header {
+  font-size: 28px;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  margin: 50px 0;
+}
+
+
+    /* Table Styles */
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      color: #444;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    td {
+      color: #444;
+    }
+    
+        /* Status Styles */
+    .status-ok {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-error {
+      color: red;
+      font-weight: bold;
+    }
+
+    .addurl {
+  margin-top: 30px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+/* Modal */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-ok {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.modal-ok:hover {
+  background-color: #3e8e41;
+}
+
+
+/* Footer Styles */
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.footer a {
+  color: #444;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+.social-icons a i {
+  color: #fff; /* Change to your desired color */
+}
+    
+
+.social-icons a {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.fa-facebook {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.fa-twitter {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.fa-instagram {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.fa-linkedin {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}
+.fa-globe {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}    
+ .fa-github {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+}       
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="container">
+<h1 class="glass-header">BOTSCOPE: Bot Performance Monitoring</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Last Checked</th>
+          <th>Uptime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% urls.forEach(function(url) { %>
+          <tr>
+            <td><%= url.name %></td>
+            <% if (url.status === 200) { %>
+              <td class="status-ok"><i class="fa fa-check-circle"></i> OK</td>
+            <% } else { %>
+              <td class="status-error"><i class="fa fa-exclamation-circle"></i> ERROR</td>
+            <% } %>
+            <td><%= url.lastChecked %></td>
+            <td><%= url.uptime %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+<div class="addurl">
+  <form action="/api/ping" method="GET" id="addUrlForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="url">URL:</label>
+    <input type="url" id="url" name="url" required>
+    <button type="submit">Add</button>
+  </form>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="modal-close" class="close">&times;</span>
+    <h2 id="modal-header"></h2>
+    <p id="modal-message"></p>
+    <button id="modal-ok" class="modal-ok">OK</button>
+  </div>
+</div>
+
+
+<!-- Footer HTML -->
+<div class="footer">
+  <p>Developed by <a href="https://www.facebook.com/Dif.017" target="_blank">Diff</a></p>
+  <p>Follow me on:</p>
+  <div class="social-icons">
+    <a href="" target="_blank"><i class="fa fa-github fa-inverse"></i></a>
+    <a href="/" target="_blank"><i class="fa fa-globe fa-inverse"></i></a>
+    <a href="https://www.facebook.com/Dif.017" target="_blank"><i class="fa fa-facebook fa-inverse"></i></a>
+    <a href="/" target="_blank"><i class="fa fa-twitter fa-inverse"></i></a>
+    <a href="/" target="_blank"><i class="fa fa-instagram fa-inverse"></i></a>
+    <a href="/" target="_blank"><i class="fa fa-linkedin fa-inverse"></i></a>
+  </div>
+  <p>&copy; 2023 All rights reserved</p>
+</div>
+</div>
+</body>          
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/0x3EF8/Live2D-v1.0@master/autoload.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+
+const addUrlForm = document.getElementById('addUrlForm');
+const modal = document.getElementById('modal');
+const modalHeader = document.getElementById('modal-header');
+const modalMessage = document.getElementById('modal-message');
+const modalOkButton = document.getElementById('modal-ok');
+const modalCloseButton = document.getElementById('modal-close');
+
+addUrlForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const name = document.getElementById('name').value;
+  const url = document.getElementById('url').value;
+  const response = await fetch(`/api/ping?name=${encodeURIComponent(name)}&url=${encodeURIComponent(url)}`, { method: 'GET' });
+  const data = await response.json();
+  if (response.ok) {
+    showModal('Success', data.message);
+  } else {
+    showModal('Error', data.error);
+  }
+});
+
+modalCloseButton.addEventListener('click', hideModal);
+
+modalOkButton.addEventListener('click', hideModal);
+
+function showModal(headerText, messageText) {
+  modalHeader.textContent = headerText;
+  modalMessage.textContent = messageText;
+  modal.style.display = 'block';
+}
+
+function hideModal() {
+  modal.style.display = 'none';
+}
+
+      
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 80,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#000000"
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false,
+        "anim": {
+          "enable": false,
+          "speed": 1,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": false,
+          "speed": 40,
+          "size_min": 0.1,
+          "sync": false
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#000000",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 2,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 400,
+          "line_linked": {
+            "opacity": 1
+          }
+        },
+        "bubble": {
+          "distance": 400,
+          "size": 40,
+          "duration": 2,
+          "opacity": 8,
+          "speed": 3
+        },
+        "repulse": {
+          "distance": 200,
+          "duration": 0.4
+        },
+        "push": {
+          "particles_nb": 4
+        },
+        "remove": {
+          "particles_nb": 2
+        }
+      }
+    }
+  });
+</script>
+
+ </html>
+ 
+
+ 
+ 
+ 
